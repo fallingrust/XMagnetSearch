@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,7 +15,7 @@ namespace XMagnetSearch
         static async Task Main(string[] args)
         {
           
-            await SearchByBTSOWAsync(1, "特朗普");
+            await SearchByZhongisouAsync(1, "特朗普");
             Console.WriteLine("Hello, World!");
             Console.ReadKey();
         }
@@ -79,8 +80,27 @@ namespace XMagnetSearch
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
+                var parser = new HtmlParser();
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);
+                var document = parser.ParseDocument(content);
+                var elemnets = document.All.Where(p => p.ClassName == "item");
+                foreach ( var elemnet in elemnets )
+                {
+                  
+                    if (!elemnet.TextContent.Contains("在线播放"))
+                    {
+                        var array = elemnet.TextContent.Split(" ");
+                        if (array.Length > 5 && elemnet.FirstElementChild != null && elemnet.FirstElementChild.FirstElementChild is IHtmlAnchorElement urlElement)
+                        {
+                            var title = array[1].Substring(0, array[1].IndexOf("Hot"));
+                            var size = array[3].Replace("Size：", "");
+                            var date = array[5].Replace("Created：", "");
+                            var children = elemnet.Children;
+                            var magnetUrl = urlElement.Href.Replace("about:///hash/", "").Replace(".html", "").Trim();
+                        }
+                    }
+                }
+                //Console.WriteLine(content);
             }
             Console.WriteLine("111111111111");
         }
@@ -109,8 +129,24 @@ namespace XMagnetSearch
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
+                
+                var parser = new HtmlParser();
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);
+                var document = parser.ParseDocument(content);
+                var elemnets = document.All.Where(p => p.ClassName == "list-group");
+                foreach ( var elemnet in elemnets )
+                {                  
+                    var array = elemnet.TextContent.Replace("\t", "").Replace(" ","").Split("\n").Where(p => p.Length > 0).Select(p=>p.Trim()).ToList();
+        
+                    if (array.Count >= 6 && elemnet.FirstElementChild?.Children.FirstOrDefault(p => p is IHtmlAnchorElement) is IHtmlAnchorElement urlElement)
+                    {
+                        var title = array[0];
+                        var size = array[3];
+                        var date = array[5];
+                        var magnetUrl = urlElement.Href.Replace("about:///info-", "");
+                    }
+                }
+                //Console.WriteLine(content);
             }
             Console.WriteLine("111111111111");
         }
