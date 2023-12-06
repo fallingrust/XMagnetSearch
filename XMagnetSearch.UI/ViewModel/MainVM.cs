@@ -9,15 +9,7 @@ namespace XMagnetSearch.UI.ViewModel
         public ObservableCollection<SearchModel> Searchs { get; set; } = [];
         public MainVM()
         {
-            for (int i = 0; i < 30; i++)
-            {
-                Searchs.Add(new SearchModel() 
-                { 
-                    Title = DateTime.Now.ToString(), 
-                    From = DateTime.Now.ToString(),
-                    Size = DateTime.Now.ToString()
-                });
-            }
+            
         }
     }
 }

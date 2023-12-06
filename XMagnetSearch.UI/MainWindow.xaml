@@ -23,76 +23,101 @@
     <Window.DataContext>
         <Binding Source="{StaticResource vm}" />
     </Window.DataContext>
-    <Grid>
-        <TextBox
-            x:Name="tb_search"
-            Width="512"
-            Height="56"
-            VerticalAlignment="Center"
-            materialDesign:HintAssist.Hint="Search"
-            materialDesign:TextFieldAssist.HasClearButton="True"
-            AcceptsReturn="True"
-            Style="{StaticResource MaterialDesignOutlinedTextBox}"
-            TextWrapping="Wrap"
-            VerticalScrollBarVisibility="Disabled"
-            Visibility="Collapsed" />
-        <ScrollViewer
-            x:Name="sc"
-            Grid.Row="1"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-            <ScrollViewer.Resources>
-                <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
-            </ScrollViewer.Resources>
-            <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Searchs}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:SearchModel}">
-                        <Border
-                            x:Name="Border"
-                            Padding="8"
-                            Background="Transparent"
-                            BorderBrush="{DynamicResource MaterialDesignDivider}"
-                            BorderThickness="0,0,0,1"
-                            Cursor="Hand">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="2"
-                                    FontSize="16"
-                                    Text="{Binding Title}" />
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Margin="0,8,0,0"
-                                    FontSize="10"
-                                    Foreground="#999999"
-                                    Text="{Binding Title}" />
-                                <TextBlock
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Margin="16,8,0,0"
-                                    FontSize="10"
-                                    Foreground="#999999"
-                                    Text="{Binding Title}" />
-                            </Grid>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-    </Grid>
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="64" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollViewer
+                x:Name="sc"
+                Grid.Row="1"
+                Background="White"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <ScrollViewer.Resources>
+                    <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
+                </ScrollViewer.Resources>
+                <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Searchs}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:SearchModel}">
+                            <Border
+                                x:Name="Border"
+                                Padding="8"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                BorderThickness="0,0,0,1"
+                                Cursor="Hand"
+                                MouseDown="OnSearchMouseDown">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        FontSize="16"
+                                        Text="{Binding Title}"
+                                        TextTrimming="CharacterEllipsis"
+                                        ToolTip="{Binding Title}" />
+                                    <DockPanel Grid.Row="1" LastChildFill="False">
+                                        <TextBlock
+                                            Margin="16,8,0,0"
+                                            HorizontalAlignment="Left"
+                                            FontSize="10"
+                                            Foreground="#999999"
+                                            Text="{Binding Size}" />
+                                        <TextBlock
+                                            Margin="16,8,0,0"
+                                            HorizontalAlignment="Left"
+                                            FontSize="10"
+                                            Foreground="#999999"
+                                            Text="{Binding From}" />
+                                        <TextBlock
+                                            Margin="0,8,0,0"
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Right"
+                                            FontSize="10"
+                                            Foreground="#999999"
+                                            Text="{Binding DateTime}" />
+                                    </DockPanel>
+
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Border
+                x:Name="bd_search"
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Background="White">
+                <TextBox
+                    x:Name="tb_search"
+                    Width="512"
+                    Height="56"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Search"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    AcceptsReturn="True"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Disabled" />
+            </Border>
+            <materialDesign:Snackbar
+                x:Name="Snackbar"
+                Grid.Row="1"
+                VerticalAlignment="Bottom"
+                MessageQueue="{materialDesign:MessageQueue}" />
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>
