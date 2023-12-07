@@ -7,6 +7,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:XMagnetSearch.UI.Models"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     xmlns:viewmodel="clr-namespace:XMagnetSearch.UI.ViewModel"
     Title="XMagnetSearch"
     Width="800"
@@ -30,9 +31,10 @@
                 <RowDefinition Height="64" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
             <ScrollViewer
                 x:Name="sc"
-                Grid.Row="1"
+                Grid.Row="2"
                 Background="White"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
@@ -96,11 +98,17 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Border
-                x:Name="bd_search"
+            <Grid
+                x:Name="grid_search"
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Background="White">
+                <svgc:SvgViewbox
+                    x:Name="svg_logo_full"
+                    Width="512"
+                    Height="56"
+                    Margin="0,0,0,156"
+                    Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
                 <TextBox
                     x:Name="tb_search"
                     Width="512"
@@ -112,7 +120,7 @@
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Disabled" />
-            </Border>
+            </Grid>
             <materialDesign:Snackbar
                 x:Name="Snackbar"
                 Grid.Row="1"

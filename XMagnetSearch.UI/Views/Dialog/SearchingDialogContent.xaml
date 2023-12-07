@@ -5,13 +5,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:XMagnetSearch.UI.Views.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="100"
-    d:DesignWidth="100"
+    Background="Transparent"
     mc:Ignorable="d">
-    <Grid>
+    <Border
+        Width="100"
+        Height="100"
+        Background="#303030"
+        CornerRadius="4">
         <ProgressBar
+            Width="36"
+            Height="36"
+            Background="Transparent"
             IsIndeterminate="True"
             Style="{StaticResource MaterialDesignCircularProgressBar}"
             Value="0" />
-    </Grid>
+    </Border>
 </UserControl>

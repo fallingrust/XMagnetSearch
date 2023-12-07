@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 
 namespace XMagnetSearch.BTSOW
 {
@@ -12,18 +13,19 @@ namespace XMagnetSearch.BTSOW
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout);
             client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
             var url = $"https://btsow.motorcycles/search/{search}/page/{page}";
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var parser = new HtmlParser();               
+                var parser = new HtmlParser();
                 var document = parser.ParseDocument(content);
                 var elemnets = document.All.Where(p => p.ClassName == "row");
                 foreach (var elemnet in elemnets)
                 {
-                    if (elemnet.Children.Count() == 3)
+                    if (elemnet.Children.Length == 3)
                     {
                         if (elemnet.Children[0] is IHtmlAnchorElement urlElement
                             && elemnet.Children[1] is IHtmlDivElement sizeElement

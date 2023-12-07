@@ -15,7 +15,7 @@ namespace XMagnetSearch
         static async Task Main(string[] args)
         {
           
-            await SearchByZhongisouAsync(1, "特朗普");
+            await SearchByEUSAsync(1, "特朗普");
             Console.WriteLine("Hello, World!");
             Console.ReadKey();
         }
@@ -60,12 +60,25 @@ namespace XMagnetSearch
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0");
             using var md5 = MD5.Create();
             var data = md5.ComputeHash(Encoding.UTF8.GetBytes($"{search}999"));
-            var param = BitConverter.ToString(data).Replace("-", string.Empty).Substring(0, 7).ToLower();
+            var param = BitConverter.ToString(data).Replace("-", string.Empty)[..7].ToLower();
             var url = $"https://{GetUrlTime()}.eusjdkws.lol/list.php?q={search}&m=&f=_all&s=&p={page}&tk={param}";
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
+                var parser = new HtmlParser();
+
                 var content = await response.Content.ReadAsStringAsync();
+                var document = parser.ParseDocument(content);
+                var elemnets = document.All.Where(p => p.ClassName == "list-group-item");
+                foreach (var elemnet in elemnets)
+                {
+                    if (elemnet.TextContent != "result")
+                    {
+                        var array = elemnet.TextContent.Split("\n").Select(p => p.Trim()).ToArray();
+                        var title = array[0];
+                        var magnetUrl = array[1].Substring(array[1].Length - 40, 40);
+                    }
+                }
                 Console.WriteLine(content);
             }
             Console.WriteLine("111111111111");
@@ -109,7 +122,7 @@ namespace XMagnetSearch
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0");
-
+       
             var url = $"https://www.btmovi.fund/so/{search}_time_{page}.html";
             var response = await client.GetAsync(url);
             if (response.IsSuccessStatusCode)

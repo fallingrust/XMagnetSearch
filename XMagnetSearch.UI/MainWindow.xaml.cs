@@ -37,7 +37,7 @@ namespace XMagnetSearch.UI
         private void OnSerachKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is TextBox tb && e.Key == Key.Enter && tb.IsKeyboardFocused)
-            {
+            {               
                 if (!string.IsNullOrWhiteSpace(tb.Text))
                 {
                     if (DataContext is MainVM vm)
@@ -45,7 +45,8 @@ namespace XMagnetSearch.UI
                         vm.Searchs.Clear();
                     }
                     _page = 0;
-                    Grid.SetRowSpan(bd_search, 1);
+                    Grid.SetRowSpan(grid_search, 1);
+                    svg_logo_full.Visibility = Visibility.Collapsed;
                     LoadSearchs(tb.Text);
                 }
                 e.Handled = true;
@@ -55,20 +56,29 @@ namespace XMagnetSearch.UI
         private void LoadSearchs(string input)
         {
             DialogHost.Show(new SearchingDialogContent(), "RootDialog");
-            _page += 1;
-            if (Plugins != null)
+            Task.Run(async () =>
             {
-                foreach (var plugin in Plugins)
+                _page += 1;
+                if (Plugins != null)
                 {
-                    plugin.Value.SearchAsync(input, _page).ContinueWith(ret =>
+                    var tasks = new List<Task<IEnumerable<SearchBean>>>();
+                    foreach (var plugin in Plugins)
                     {
-                        if (ret.IsCompletedSuccessfully)
+                        tasks.Add(plugin.Value.SearchAsync(input, _page));                        
+                    }
+                    Task.WaitAll([.. tasks]);
+                    var results = new List<SearchBean>();
+                    foreach (var task in tasks)
+                    {
+                        try
                         {
-                            UpdateSearchs(ret.Result);
+                            results.AddRange(await task);
                         }
-                    });
+                        catch { }                      
+                    }
+                    UpdateSearchs(results);
                 }
-            }
+            });           
         }
         private void UpdateSearchs(IEnumerable<SearchBean> searchBeans)
         {
@@ -81,15 +91,16 @@ namespace XMagnetSearch.UI
             {
                 DialogHost.Close("RootDialog");
             }
-            var models = new List<SearchModel>();
-            foreach(var bean in  searchBeans)
-            {
-                models.Add(SearchModel.Converter(bean));
-            }
             if (DataContext is MainVM vm)
             {
-                vm.Searchs.AddRange(models);
-            }
+                foreach (var bean in searchBeans)
+                {
+                    if (!vm.Searchs.Any(p => p.MagnetUrl == bean.MagnetUrl))
+                    {
+                        vm.Searchs.Add(SearchModel.Converter(bean));
+                    }
+                }
+            }          
         }
 
         private void RegisterPluginAsync()
@@ -121,7 +132,7 @@ namespace XMagnetSearch.UI
             {
                 if (DateTime.Now - _lastDownTime <= TimeSpan.FromMilliseconds(300))
                 {
-                    Clipboard.SetText(searchModel.MagnetUrl);
+                    Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
                     Snackbar.MessageQueue?.Clear();
                     Snackbar.MessageQueue?.Enqueue("链接已复制");
                 }              
