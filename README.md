@@ -1,8 +1,7 @@
 
 
-# ProjectName
+# XMagnetSearch
 
-ProjectName and Description
 
 <!-- PROJECT SHIELDS -->
 
@@ -24,7 +23,9 @@ ProjectName and Description
 <h3 align="center">"磁力聚合搜索</h3>
   <p align="center">
     一个简单的磁力聚合搜索软件,目前集成了4个磁力网站
-    <br />
+    <br/>
+    <img src="images/Snipaste_2023-12-07_17-59-40.png" alt="UI" width="470" height="265">
+    <br />     
     <a href="https://github.com/fallingrust/XMagnetSearch/releases"><strong>前往下载 »</strong></a>
     <br />   
   </p>
@@ -81,5 +82,17 @@ filetree
 ### 版权说明
 
 该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/fallingrust/XMagnetSearch/LICENSE.txt)
+<!-- links -->
+[your-project-path]:fallingrust/XMagnetSearch
+[contributors-shield]: https://img.shields.io/github/contributors/fallingrust/XMagnetSearch.svg?style=flat-square
+[contributors-url]: https://github.com/fallingrust/XMagnetSearch/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/fallingrust/XMagnetSearch.svg?style=flat-square
+[forks-url]: https://github.com/fallingrust/XMagnetSearch/network/members
+[stars-shield]: https://img.shields.io/github/stars/fallingrust/XMagnetSearch.svg?style=flat-square
+[stars-url]: https://github.com/fallingrust/XMagnetSearch/stargazers
+[issues-shield]: https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg?style=flat-square
+[issues-url]: https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg
+[license-shield]: https://img.shields.io/github/license/fallingrust/XMagnetSearch.svg?style=flat-square
+[license-url]: https://github.com/fallingrust/XMagnetSearch/blob/master/LICENSE.txt
 
 
