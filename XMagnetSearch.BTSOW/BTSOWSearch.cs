@@ -5,10 +5,10 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.BTSOW
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("https://btsow.motorcycles", "btsow.motorcycles","1.0.0")]
+    [SearchMetadata("btsow.motorcycles", "btsow","1.0.0")]
     public class BTSOWSearch : ISearch
     {
-       public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+       public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();
@@ -36,7 +36,7 @@ namespace XMagnetSearch.BTSOW
                             var date = dateElement.TextContent;
                             if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(magnetHash))
                             {
-                                results.Add(new(title, magnetHash, size, "btsow.motorcycles", date));
+                                results.Add(new(title, magnetHash, size, "btsow", date));
                             }
                         }
                     }

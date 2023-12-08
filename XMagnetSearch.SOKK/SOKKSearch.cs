@@ -5,10 +5,10 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.SOKK
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("11h.sokk24.buzz", "", "1.0.0")]
+    [SearchMetadata("11h.sokk24.buzz", "吃力网", "1.0.0")]
     public class SOKKSearch : ISearch
     {
-        public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+        public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();
@@ -33,7 +33,7 @@ namespace XMagnetSearch.SOKK
                             var size = array[3].Replace("Size：", "");
                             var date = array[5].Replace("Created：", "");                            
                             var magnetUrl = urlElement.Href.Replace("about:///hash/", "").Replace(".html", "").Trim();
-                            results.Add(new(title, magnetUrl, size, "11h.sokk24.buzz", date));
+                            results.Add(new(title, magnetUrl, size, "吃力网", date));
                         }
                     }
                 }

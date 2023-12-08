@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,8 @@ namespace XMagnetSearch.UI
             tb_search.PreviewKeyDown += OnSerachKeyDown;
             RegisterPluginAsync();
             sc.ScrollChanged += OnScrollChanged;
-        }       
+        }
+        
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (sender is ScrollViewer sc && sc.ViewportHeight + sc.VerticalOffset >= sc.ExtentHeight && !string.IsNullOrWhiteSpace(tb_search.Text))
@@ -102,8 +104,23 @@ namespace XMagnetSearch.UI
                 }
             }          
         }
-
-        private void RegisterPluginAsync()
+        private void UpdatePluginss(IEnumerable<PluginModel> pluginModels)
+        {
+            if (!CheckAccess())
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdatePluginss(pluginModels));
+                return;
+            }
+            if (DialogHost.IsDialogOpen("RootDialog"))
+            {
+                DialogHost.Close("RootDialog");
+            }
+            if (DataContext is MainVM vm)
+            {
+                vm.Plugins.AddRange(pluginModels);
+            }
+        }
+        private async void RegisterPluginAsync()
         {
             var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             if (dir.Exists)
@@ -112,7 +129,14 @@ namespace XMagnetSearch.UI
                 _container = new CompositionContainer(catalog);
                 try
                 {
-                    _container.ComposeParts(this);                    
+                    _container.ComposeParts(this);
+                    var pluginModels = new List<PluginModel>();
+                    foreach(var plugin in Plugins)
+                    {
+                        var enable = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
+                        pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, enable));
+                    }
+                    UpdatePluginss(pluginModels);
                 }
                 catch (Exception e)
                 {
