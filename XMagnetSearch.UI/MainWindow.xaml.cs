@@ -42,9 +42,10 @@ namespace XMagnetSearch.UI
             {               
                 if (!string.IsNullOrWhiteSpace(tb.Text))
                 {
+                    sc.ScrollToVerticalOffset(0);
                     if (DataContext is MainVM vm)
                     {
-                        vm.Searchs.Clear();
+                        vm.Searchs.Clear();   
                     }
                     _page = 0;
                     Grid.SetRowSpan(grid_search, 1);
