@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>enable</Nullable>		
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
@@ -11,7 +11,9 @@
 		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows</OutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\</OutputPath>
+		<DebugType>None</DebugType>
+		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />

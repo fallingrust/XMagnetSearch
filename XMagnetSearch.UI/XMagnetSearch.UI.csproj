@@ -1,38 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<Version>0.0.1</Version>
+		<ApplicationIcon>Resources\logo\logo.ico</ApplicationIcon>
+		<Description>磁力聚合搜索</Description>
+		<PackageProjectUrl>https://github.com/fallingrust/XMagnetSearch</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/fallingrust/XMagnetSearch</RepositoryUrl>
+		<PackageIcon>logo.png</PackageIcon>
+		<Authors>fallingrust</Authors>
+		<Company>fallingrust</Company>		
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>None</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+		<PackageReference Include="Prism.Wpf" Version="8.1.97" />
+		<PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
+		<PackageReference Include="ShowMeTheXAML.MSBuild" Version="2.0.0" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-	  <ApplicationIcon>Resources\logo\logo.ico</ApplicationIcon>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\logo\*.*" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-    <PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
-    <PackageReference Include="ShowMeTheXAML.MSBuild" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
-    <ProjectReference Include="..\XMagnetSearch.Resources\XMagnetSearch.Resources.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-	  <Content Include="Resources\logo\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-
+	<ItemGroup>
+		<ProjectReference Include="..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
+		<ProjectReference Include="..\XMagnetSearch.Resources\XMagnetSearch.Resources.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Remove="Resources\logo\*.*" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\logo\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
 
 </Project>
