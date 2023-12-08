@@ -8,8 +8,8 @@ namespace XMagnetSearch.EUSJ
     [Export(typeof(ISearch))]
     [SearchMetadata("eusjdkws.lol", "", "1.0.0")]
     public class EUSJSearch : ISearch
-    {       
-      public async  Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+    {
+        public override async  Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();

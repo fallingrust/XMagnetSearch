@@ -1,15 +1,14 @@
 ﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 
 namespace XMagnetSearch.BTSOW
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("btsow.motorcycles","","1.0.0")]
+    [SearchMetadata("https://btsow.motorcycles", "btsow.motorcycles","1.0.0")]
     public class BTSOWSearch : ISearch
     {
-        async Task<IEnumerable<SearchBean>> ISearch.SearchAsync(string search, int page)
+       public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();

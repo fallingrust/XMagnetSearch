@@ -5,10 +5,10 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.ZhongZiSo
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("m.zhongziso365.xyz", "", "1.0.0")]
+    [SearchMetadata("https://m.zhongziso365.xyz", "种子搜", "1.0.0")]
     public class ZhongzisoSearch : ISearch
     {
-        public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+        public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();
@@ -39,5 +39,6 @@ namespace XMagnetSearch.ZhongZiSo
             }
             return results;
         }
+        
     }
 }
