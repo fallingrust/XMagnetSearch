@@ -68,7 +68,6 @@ namespace XMagnetSearch.UI
                     {
                         tasks.Add(plugin.Value.SearchAsync(input, _page));                        
                     }
-                    Task.WaitAll([.. tasks]);
                     var results = new List<SearchBean>();
                     foreach (var task in tasks)
                     {
