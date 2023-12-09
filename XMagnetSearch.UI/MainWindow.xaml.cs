@@ -47,8 +47,9 @@ namespace XMagnetSearch.UI
                         vm.Searchs.Clear();   
                     }
                     _page = 0;
-                    Grid.SetRowSpan(grid_search, 1);
+                    Grid.SetRow(tb_search, 0);
                     svg_logo_full.Visibility = Visibility.Collapsed;
+                    sc.Visibility = Visibility.Visible;
                     LoadSearchs(tb.Text);
                 }
                 e.Handled = true;

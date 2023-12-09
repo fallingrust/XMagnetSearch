@@ -30,18 +30,35 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="64" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="64" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="64" />
             </Grid.RowDefinitions>
-
+            <svgc:SvgViewbox
+                 x:Name="svg_logo_full"
+                 Width="512"
+                 Grid.Row="1"
+                 VerticalAlignment="Bottom"
+                 Height="56"
+                Margin="0 0 0 12"
+                 Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
             <ScrollViewer
                 x:Name="sc"
-                Grid.Row="2"
+                Grid.Row="1"
+                Grid.RowSpan="4"
+                Visibility="Collapsed"
                 Background="White"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
                 <ScrollViewer.Resources>
                     <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
                 </ScrollViewer.Resources>
-                <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding Searchs}">
+                <ItemsControl ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Searchs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:SearchModel}">
                             <Border
@@ -92,32 +109,23 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Grid
-                x:Name="grid_search"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Background="White">
-                <svgc:SvgViewbox
-                    x:Name="svg_logo_full"
-                    Width="512"
-                    Height="56"
-                    Margin="0,0,0,156"
-                    Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
-                <TextBox
-                    x:Name="tb_search"
-                    Width="512"
-                    Height="56"
-                    VerticalAlignment="Center"
-                    materialDesign:HintAssist.Hint="Search"
-                    materialDesign:TextFieldAssist.HasClearButton="True"
-                    AcceptsReturn="True"
-                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                    TextWrapping="Wrap"
-                    VerticalScrollBarVisibility="Disabled" />
-            </Grid>
+
+            <TextBox
+                x:Name="tb_search"
+                Background="White"
+                Grid.Row="2"
+                Width="512"
+                Height="56"
+                VerticalAlignment="Center"
+                materialDesign:HintAssist.Hint="Search"
+                materialDesign:TextFieldAssist.HasClearButton="True"
+                AcceptsReturn="True"
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Disabled" />
             <materialDesign:Snackbar
                 x:Name="Snackbar"
-                Grid.Row="1"
+                Grid.Row="4"
                 VerticalAlignment="Bottom"
                 MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
