@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -104,11 +103,11 @@ namespace XMagnetSearch.UI
                 }
             }          
         }
-        private void UpdatePluginss(IEnumerable<PluginModel> pluginModels)
+        private void UpdatePlugins(IEnumerable<PluginModel> pluginModels)
         {
             if (!CheckAccess())
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdatePluginss(pluginModels));
+                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdatePlugins(pluginModels));
                 return;
             }
             if (DialogHost.IsDialogOpen("RootDialog"))
@@ -122,11 +121,19 @@ namespace XMagnetSearch.UI
         }
         private async void RegisterPluginAsync()
         {
-            var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
             if (dir.Exists)
             {
-                var catalog = new DirectoryCatalog(dir.FullName, "*.dll");
-                _container = new CompositionContainer(catalog);
+                
+                var dirCatalogs = new List<DirectoryCatalog>();
+                foreach(var pluginDir  in dir.GetDirectories())
+                {
+                    var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
+                    dirCatalogs.Add(catalog);
+                }
+                var catalogs = new AggregateCatalog(dirCatalogs);
+
+                _container = new CompositionContainer(catalogs);
                 try
                 {
                     _container.ComposeParts(this);
@@ -136,7 +143,7 @@ namespace XMagnetSearch.UI
                         var enable = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
                         pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, enable));
                     }
-                    UpdatePluginss(pluginModels);
+                    UpdatePlugins(pluginModels);
                 }
                 catch (Exception e)
                 {

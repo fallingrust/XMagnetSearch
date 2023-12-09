@@ -8,10 +8,10 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\eusj\</OutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\eusj\</OutputPath>
 		<DebugType>None</DebugType>
 		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
