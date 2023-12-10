@@ -27,7 +27,7 @@
 
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost CloseOnClickAway="True" Identifier="ChildDialog">
-            <Grid>
+            <Grid Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64" />
                     <RowDefinition Height="*" />
@@ -35,19 +35,12 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="64" />
                 </Grid.RowDefinitions>
-                <svgc:SvgViewbox
-                    x:Name="svg_logo_full"
-                    Grid.Row="1"
-                    Width="512"
-                    Height="56"
-                    Margin="0,0,0,12"
-                    VerticalAlignment="Bottom"
-                    Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
+
                 <ScrollViewer
                     x:Name="sc"
                     Grid.Row="1"
                     Grid.RowSpan="4"
-                    Background="White"
+                    Background="Transparent"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto">
                     <ScrollViewer.Resources>
@@ -113,7 +106,14 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-
+                <svgc:SvgViewbox
+                    x:Name="svg_logo_full"
+                    Grid.Row="1"
+                    Width="512"
+                    Height="56"
+                    Margin="0,0,0,12"
+                    VerticalAlignment="Bottom"
+                    Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
                 <Grid x:Name="grid_search" Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -129,7 +129,7 @@
                         materialDesign:HintAssist.Hint="Search"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         AcceptsReturn="True"
-                        Background="White"
+                        Background="Transparent"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Disabled" />
