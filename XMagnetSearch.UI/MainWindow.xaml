@@ -26,108 +26,130 @@
     </Window.DataContext>
 
     <materialDesign:DialogHost Identifier="RootDialog">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="64" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="64" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="64" />
-            </Grid.RowDefinitions>
-            <svgc:SvgViewbox
-                 x:Name="svg_logo_full"
-                 Width="512"
-                 Grid.Row="1"
-                 VerticalAlignment="Bottom"
-                 Height="56"
-                Margin="0 0 0 12"
-                 Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
-            <ScrollViewer
-                x:Name="sc"
-                Grid.Row="1"
-                Grid.RowSpan="4"
-                Visibility="Collapsed"
-                Background="White"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-                <ScrollViewer.Resources>
-                    <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
-                </ScrollViewer.Resources>
-                <ItemsControl ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Searchs}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type models:SearchModel}">
-                            <Border
-                                x:Name="Border"
-                                Padding="8"
-                                Background="Transparent"
-                                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                BorderThickness="0,0,0,1"
-                                Cursor="Hand"
-                                MouseDown="OnSearchMouseDown">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="2*" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2"
-                                        FontSize="16"
-                                        Text="{Binding Title}"
-                                        TextTrimming="CharacterEllipsis"
-                                        ToolTip="{Binding Title}" />
-                                    <DockPanel Grid.Row="1" LastChildFill="False">
+        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="ChildDialog">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="64" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="64" />
+                </Grid.RowDefinitions>
+                <svgc:SvgViewbox
+                    x:Name="svg_logo_full"
+                    Grid.Row="1"
+                    Width="512"
+                    Height="56"
+                    Margin="0,0,0,12"
+                    VerticalAlignment="Bottom"
+                    Source="pack://application:,,,/XMagnetSearch.Resources;component/Resources/logos/logo_full.svg" />
+                <ScrollViewer
+                    x:Name="sc"
+                    Grid.Row="1"
+                    Grid.RowSpan="4"
+                    Background="White"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.Resources>
+                        <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
+                    </ScrollViewer.Resources>
+                    <ItemsControl
+                        Grid.IsSharedSizeScope="True"
+                        ItemsSource="{Binding Searchs}"
+                        ScrollViewer.CanContentScroll="True"
+                        VirtualizingStackPanel.VirtualizationMode="Recycling">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:SearchModel}">
+                                <Border
+                                    x:Name="Border"
+                                    Padding="8"
+                                    Background="Transparent"
+                                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                    BorderThickness="0,0,0,1"
+                                    Cursor="Hand"
+                                    MouseDown="OnSearchMouseDown">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
                                         <TextBlock
-                                            Margin="16,8,0,0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="10"
-                                            Foreground="#999999"
-                                            Text="{Binding Size}" />
-                                        <TextBlock
-                                            Margin="16,8,0,0"
-                                            HorizontalAlignment="Left"
-                                            FontSize="10"
-                                            Foreground="#999999"
-                                            Text="{Binding From}" />
-                                        <TextBlock
-                                            Margin="0,8,0,0"
-                                            HorizontalAlignment="Left"
-                                            DockPanel.Dock="Right"
-                                            FontSize="10"
-                                            Foreground="#999999"
-                                            Text="{Binding DateTime}" />
-                                    </DockPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            FontSize="16"
+                                            Text="{Binding Title}"
+                                            TextTrimming="CharacterEllipsis"
+                                            ToolTip="{Binding Title}" />
+                                        <DockPanel Grid.Row="1" LastChildFill="False">
+                                            <TextBlock
+                                                Margin="16,8,0,0"
+                                                HorizontalAlignment="Left"
+                                                FontSize="10"
+                                                Foreground="#999999"
+                                                Text="{Binding Size}" />
+                                            <TextBlock
+                                                Margin="16,8,0,0"
+                                                HorizontalAlignment="Left"
+                                                FontSize="10"
+                                                Foreground="#999999"
+                                                Text="{Binding From}" />
+                                            <TextBlock
+                                                Margin="0,8,0,0"
+                                                HorizontalAlignment="Left"
+                                                DockPanel.Dock="Right"
+                                                FontSize="10"
+                                                Foreground="#999999"
+                                                Text="{Binding DateTime}" />
+                                        </DockPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
-            <TextBox
-                x:Name="tb_search"
-                Background="White"
-                Grid.Row="2"
-                Width="512"
-                Height="56"
-                VerticalAlignment="Center"
-                materialDesign:HintAssist.Hint="Search"
-                materialDesign:TextFieldAssist.HasClearButton="True"
-                AcceptsReturn="True"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                TextWrapping="Wrap"
-                VerticalScrollBarVisibility="Disabled" />
-            <materialDesign:Snackbar
-                x:Name="Snackbar"
-                Grid.Row="4"
-                VerticalAlignment="Bottom"
-                MessageQueue="{materialDesign:MessageQueue}" />
-        </Grid>
+                <Grid x:Name="grid_search" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="tb_search"
+                        Grid.Column="1"
+                        Width="512"
+                        Height="56"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Search"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        AcceptsReturn="True"
+                        Background="White"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Disabled" />
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Left"
+                        Click="OnSourceClick"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        ToolTip="数据源">
+                        <materialDesign:PackIcon Kind="FilterCogOutline" />
+                    </Button>
+                </Grid>
+
+
+                <materialDesign:Snackbar
+                    x:Name="Snackbar"
+                    Grid.Row="4"
+                    VerticalAlignment="Bottom"
+                    MessageQueue="{materialDesign:MessageQueue}" />
+            </Grid>
+        </materialDesign:DialogHost>
     </materialDesign:DialogHost>
 </Window>

@@ -21,6 +21,7 @@ namespace XMagnetSearch.UI.Models
         {
             Url = url;
             Enable = enable;
+            Selected = enable;
         }
         public PluginModel(string url, string name, bool enable) : this(url,enable)
         {
