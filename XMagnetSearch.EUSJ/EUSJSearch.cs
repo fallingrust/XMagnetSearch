@@ -6,10 +6,10 @@ using System.Text;
 namespace XMagnetSearch.EUSJ
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("eusjdkws.lol", "", "1.0.0")]
+    [SearchMetadata("eusjdkws.lol", "czechsearch", "1.0.0")]
     public class EUSJSearch : ISearch
-    {       
-      public async  Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+    {
+        public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             using var client = new HttpClient();
@@ -30,9 +30,12 @@ namespace XMagnetSearch.EUSJ
                     if (elemnet.TextContent != "result")
                     {
                         var array = elemnet.TextContent.Split("\n").Select(p => p.Trim()).ToArray();
-                        var title = array[0];
-                        var magnetUrl = array[1].Substring(array[1].Length - 40, 40);
-                        results.Add(new(title, magnetUrl, "", "eusjdkws.lol", ""));
+                        if (array.Length >= 2 && array[1].Length > 40)
+                        {
+                            var title = array[0];
+                            var magnetUrl = array[1].Substring(array[1].Length - 40, 40);
+                            results.Add(new(title, magnetUrl, "", "czechsearch", ""));
+                        }
                     }
                 }                
             }

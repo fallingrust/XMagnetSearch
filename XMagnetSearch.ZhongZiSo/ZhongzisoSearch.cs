@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.ZhongZiSo
 {
     [Export(typeof(ISearch))]
-    [SearchMetadata("m.zhongziso365.xyz", "", "1.0.0")]
+    [SearchMetadata("m.zhongziso365.xyz", "种子搜", "1.0.0")]
     public class ZhongzisoSearch : ISearch
     {
         public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
@@ -33,11 +33,12 @@ namespace XMagnetSearch.ZhongZiSo
                         var size = array[3];
                         var date = array[5];
                         var magnetUrl = urlElement.Href.Replace("about:///info-", "");
-                        results.Add(new(title, magnetUrl, size, "m.zhongziso365.xyz", date));
+                        results.Add(new(title, magnetUrl, size, "种子搜", date));
                     }
                 }
             }
             return results;
         }
+        
     }
 }
