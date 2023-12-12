@@ -20,7 +20,7 @@
     <img src="images/logo.png" alt="Logo" width="519" height="110">
   </a>
 
-<h3 align="center">"磁力聚合搜索</h3>
+<h3 align="center">磁力聚合搜索</h3>
   <p align="center">
     一个简单的磁力聚合搜索软件,目前集成了4个磁力网站
     <br/>
