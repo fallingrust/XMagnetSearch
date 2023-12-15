@@ -71,13 +71,16 @@
                                             <RowDefinition Height="2*" />
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock
+                                        <TextBox
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="0"
                                             FontSize="16"
+                                            IsReadOnly="True"
+                                            Style="{x:Null}"
                                             Text="{Binding Title}"
-                                            TextTrimming="CharacterEllipsis"
                                             ToolTip="{Binding Title}" />
                                         <DockPanel Grid.Row="1" LastChildFill="False">
                                             <TextBlock
