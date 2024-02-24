@@ -5,14 +5,15 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<Version>0.0.2</Version>
+		<Version>0.0.3</Version>
 		<ApplicationIcon>Resources\logo\logo.ico</ApplicationIcon>
 		<Description>磁力聚合搜索</Description>
 		<PackageProjectUrl>https://github.com/fallingrust/XMagnetSearch</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/fallingrust/XMagnetSearch</RepositoryUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<Authors>fallingrust</Authors>
-		<Company>fallingrust</Company>		
+		<Company>fallingrust</Company>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>		
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">

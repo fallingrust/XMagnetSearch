@@ -25,8 +25,11 @@
         <Binding Source="{StaticResource vm}" />
     </Window.DataContext>
 
-    <materialDesign:DialogHost Identifier="RootDialog">
-        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="ChildDialog">
+    <materialDesign:DialogHost x:Name="RootDialog" Identifier="RootDialog">
+        <materialDesign:DialogHost
+            x:Name="ChildDialog"
+            CloseOnClickAway="True"
+            Identifier="ChildDialog">
             <Grid Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64" />
@@ -71,13 +74,16 @@
                                             <RowDefinition Height="2*" />
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
-                                        <TextBlock
+                                        <TextBox
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Grid.ColumnSpan="2"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="0"
                                             FontSize="16"
+                                            IsReadOnly="True"
+                                            Style="{x:Null}"
                                             Text="{Binding Title}"
-                                            TextTrimming="CharacterEllipsis"
                                             ToolTip="{Binding Title}" />
                                         <DockPanel Grid.Row="1" LastChildFill="False">
                                             <TextBlock

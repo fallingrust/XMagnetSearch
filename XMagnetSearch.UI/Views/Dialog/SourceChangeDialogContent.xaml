@@ -33,6 +33,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="24" />
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition SharedSizeGroup="Checkerz" />
                             </Grid.ColumnDefinitions>
                             <Ellipse
@@ -46,15 +47,27 @@
                                 Text="{Binding Name}"
                                 TextTrimming="CharacterEllipsis"
                                 ToolTip="{Binding Name}" />
-                            <CheckBox
+                            <TextBlock
+                                x:Name="ttl"
                                 Grid.Column="2"
+                                Margin="0,0,8,0"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="{Binding TTL, StringFormat={}{0}ms}"
+                                TextTrimming="CharacterEllipsis" />
+                            <CheckBox
+                                Grid.Column="3"
                                 VerticalAlignment="Center"
                                 IsChecked="{Binding Selected}" />
                         </Grid>
                     </Border>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Enable}" Value="False">
+                            <Setter TargetName="ttl" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="ellipse" Property="Fill" Value="Gray" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Enable}" Value="True">
+                            <Setter TargetName="ttl" Property="Foreground" Value="Green" />
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

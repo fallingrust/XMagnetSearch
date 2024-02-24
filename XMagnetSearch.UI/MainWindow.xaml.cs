@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,13 +25,26 @@ namespace XMagnetSearch.UI
         {
             InitializeComponent();
             tb_search.PreviewKeyDown += OnSerachKeyDown;
-            RegisterPluginAsync();
             sc.ScrollChanged += OnScrollChanged;
+            RootDialog.Loaded += OnRootDialogLoaded;
+#if DEBUG
+            AllocConsole();
+#endif
         }
-        
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+
+        private void OnRootDialogLoaded(object sender, RoutedEventArgs e)
         {
-            if (sender is ScrollViewer sc && sc.ViewportHeight + sc.VerticalOffset >= sc.ExtentHeight && !string.IsNullOrWhiteSpace(tb_search.Text))
+            _ = DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
+            _ = RegisterPluginAsync();
+        }
+
+        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {        
+            if (e.ViewportHeight + e.VerticalOffset >= e.ExtentHeight 
+                && e.ExtentHeight > 0
+                && e.VerticalChange > 0
+                && !DialogHost.IsDialogOpen(RootDialog.Identifier)
+                && !string.IsNullOrWhiteSpace(tb_search.Text))
             {
                 LoadSearchs(tb_search.Text);
             }
@@ -61,7 +75,6 @@ namespace XMagnetSearch.UI
             base.OnClosed(e);
             _container?.Dispose();
         }
-        
         private void OnSearchMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement container && container.DataContext is SearchModel searchModel)
@@ -80,12 +93,12 @@ namespace XMagnetSearch.UI
         {
             if (DataContext is MainVM vm)
             {
-                DialogHost.Show(new SourceChangeDialogContent(vm.Plugins), "ChildDialog");
+                DialogHost.Show(new SourceChangeDialogContent(vm.Plugins), ChildDialog.Identifier);
             }
         }
         private void LoadSearchs(string input)
         {
-            DialogHost.Show(new SearchingDialogContent(), "RootDialog");
+            DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
             List<string>? selectePlugins = null;
             if (DataContext is MainVM vm)
             {
@@ -98,6 +111,7 @@ namespace XMagnetSearch.UI
                     _page += 1;
                     if (Plugins != null)
                     {
+                        Console.WriteLine($"load page {_page}~");
                         var tasks = new List<Task<IEnumerable<SearchBean>>>();
                         foreach (var plugin in Plugins)
                         {
@@ -106,6 +120,7 @@ namespace XMagnetSearch.UI
                                 tasks.Add(plugin.Value.SearchAsync(input, _page));
                             }
                         }
+                        Task.WaitAll(tasks.ToArray());
                         var results = new List<SearchBean>();
                         foreach (var task in tasks)
                         {
@@ -124,12 +139,12 @@ namespace XMagnetSearch.UI
         {
             if (!CheckAccess())
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdateSearchs(searchBeans));
+                Dispatcher.Invoke(DispatcherPriority.DataBind, () => UpdateSearchs(searchBeans));
                 return;
             }
-            if (DialogHost.IsDialogOpen("RootDialog"))
+            if (DialogHost.IsDialogOpen(RootDialog.Identifier))
             {
-                DialogHost.Close("RootDialog");
+                DialogHost.Close(RootDialog.Identifier);
             }
             if (DataContext is MainVM vm)
             {
@@ -149,9 +164,9 @@ namespace XMagnetSearch.UI
                 Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdatePlugins(pluginModels));
                 return;
             }
-            if (DialogHost.IsDialogOpen("RootDialog"))
+            if (DialogHost.IsDialogOpen(RootDialog.Identifier))
             {
-                DialogHost.Close("RootDialog");
+                DialogHost.Close(RootDialog.Identifier);
             }
             if (DataContext is MainVM vm)
             {
@@ -160,38 +175,46 @@ namespace XMagnetSearch.UI
             Snackbar.MessageQueue?.Clear();
             Snackbar.MessageQueue?.Enqueue("搜索源已更新");
         }
-        private async void RegisterPluginAsync()
+        private async Task RegisterPluginAsync()
         {
-            var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
-            if (dir.Exists)
-            {
-                
-                var dirCatalogs = new List<DirectoryCatalog>();
-                foreach(var pluginDir  in dir.GetDirectories())
-                {
-                    var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
-                    dirCatalogs.Add(catalog);
-                }
-                var catalogs = new AggregateCatalog(dirCatalogs);
+            await Task.Run(async () =>
+             {
+                 var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
+                 if (dir.Exists)
+                 {
 
-                _container = new CompositionContainer(catalogs);
-                try
-                {
-                    _container.ComposeParts(this);
-                    var pluginModels = new List<PluginModel>();
-                    foreach(var plugin in Plugins)
-                    {
-                        var enable = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
-                        pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, enable));
-                    }
-                    UpdatePlugins(pluginModels);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            }
+                     var dirCatalogs = new List<DirectoryCatalog>();
+                     foreach (var pluginDir in dir.GetDirectories())
+                     {
+                         var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
+                         dirCatalogs.Add(catalog);
+                     }
+                     var catalogs = new AggregateCatalog(dirCatalogs);
+
+                     _container = new CompositionContainer(catalogs);
+                     try
+                     {
+                         _container.ComposeParts(this);
+                         var pluginModels = new List<PluginModel>();
+
+                         foreach (var plugin in Plugins)
+                         {
+                             var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
+                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
+                         }
+                         UpdatePlugins(pluginModels);
+                     }
+                     catch (Exception e)
+                     {
+                         UpdatePlugins(new List<PluginModel>());
+                         Console.WriteLine(e.ToString());
+                     }
+                 }
+             });
+            
         }
-       
+        [LibraryImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static partial bool AllocConsole();
     }
 }
