@@ -34,13 +34,17 @@ namespace XMagnetSearch.UI
 
         private void OnRootDialogLoaded(object sender, RoutedEventArgs e)
         {
-            _ = DialogHost.Show(new SearchingDialogContent(), "RootDialog");
+            _ = DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
             _ = RegisterPluginAsync();
         }
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (sender is ScrollViewer sc && sc.ViewportHeight + sc.VerticalOffset >= sc.ExtentHeight && !string.IsNullOrWhiteSpace(tb_search.Text))
+        {        
+            if (e.ViewportHeight + e.VerticalOffset >= e.ExtentHeight 
+                && e.ExtentHeight > 0
+                && e.VerticalChange > 0
+                && !DialogHost.IsDialogOpen(RootDialog.Identifier)
+                && !string.IsNullOrWhiteSpace(tb_search.Text))
             {
                 LoadSearchs(tb_search.Text);
             }
@@ -89,12 +93,12 @@ namespace XMagnetSearch.UI
         {
             if (DataContext is MainVM vm)
             {
-                DialogHost.Show(new SourceChangeDialogContent(vm.Plugins), "ChildDialog");
+                DialogHost.Show(new SourceChangeDialogContent(vm.Plugins), ChildDialog.Identifier);
             }
         }
         private void LoadSearchs(string input)
         {
-            DialogHost.Show(new SearchingDialogContent(), "RootDialog");
+            DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
             List<string>? selectePlugins = null;
             if (DataContext is MainVM vm)
             {
@@ -107,6 +111,7 @@ namespace XMagnetSearch.UI
                     _page += 1;
                     if (Plugins != null)
                     {
+                        Console.WriteLine($"load page {_page}~");
                         var tasks = new List<Task<IEnumerable<SearchBean>>>();
                         foreach (var plugin in Plugins)
                         {
@@ -134,12 +139,12 @@ namespace XMagnetSearch.UI
         {
             if (!CheckAccess())
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdateSearchs(searchBeans));
+                Dispatcher.Invoke(DispatcherPriority.DataBind, () => UpdateSearchs(searchBeans));
                 return;
             }
-            if (DialogHost.IsDialogOpen("RootDialog"))
+            if (DialogHost.IsDialogOpen(RootDialog.Identifier))
             {
-                DialogHost.Close("RootDialog");
+                DialogHost.Close(RootDialog.Identifier);
             }
             if (DataContext is MainVM vm)
             {
@@ -159,9 +164,9 @@ namespace XMagnetSearch.UI
                 Dispatcher.BeginInvoke(DispatcherPriority.DataBind, () => UpdatePlugins(pluginModels));
                 return;
             }
-            if (DialogHost.IsDialogOpen("RootDialog"))
+            if (DialogHost.IsDialogOpen(RootDialog.Identifier))
             {
-                DialogHost.Close("RootDialog");
+                DialogHost.Close(RootDialog.Identifier);
             }
             if (DataContext is MainVM vm)
             {

@@ -26,7 +26,10 @@
     </Window.DataContext>
 
     <materialDesign:DialogHost x:Name="RootDialog" Identifier="RootDialog">
-        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="ChildDialog">
+        <materialDesign:DialogHost
+            x:Name="ChildDialog"
+            CloseOnClickAway="True"
+            Identifier="ChildDialog">
             <Grid Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64" />
