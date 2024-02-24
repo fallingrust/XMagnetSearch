@@ -177,37 +177,41 @@ namespace XMagnetSearch.UI
         }
         private async Task RegisterPluginAsync()
         {
-            var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
-            if (dir.Exists)
-            {
-                
-                var dirCatalogs = new List<DirectoryCatalog>();
-                foreach(var pluginDir  in dir.GetDirectories())
-                {
-                    var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
-                    dirCatalogs.Add(catalog);
-                }
-                var catalogs = new AggregateCatalog(dirCatalogs);
+            await Task.Run(async () =>
+             {
+                 var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
+                 if (dir.Exists)
+                 {
 
-                _container = new CompositionContainer(catalogs);
-                try
-                {
-                    _container.ComposeParts(this);
-                    var pluginModels = new List<PluginModel>();
-                   
-                    foreach (var plugin in Plugins)
-                    {
-                        var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
-                        pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
-                    }
-                    UpdatePlugins(pluginModels);
-                }
-                catch (Exception e)
-                {
-                    UpdatePlugins(new List<PluginModel>());
-                    Console.WriteLine(e.ToString());
-                }
-            }
+                     var dirCatalogs = new List<DirectoryCatalog>();
+                     foreach (var pluginDir in dir.GetDirectories())
+                     {
+                         var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
+                         dirCatalogs.Add(catalog);
+                     }
+                     var catalogs = new AggregateCatalog(dirCatalogs);
+
+                     _container = new CompositionContainer(catalogs);
+                     try
+                     {
+                         _container.ComposeParts(this);
+                         var pluginModels = new List<PluginModel>();
+
+                         foreach (var plugin in Plugins)
+                         {
+                             var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
+                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
+                         }
+                         UpdatePlugins(pluginModels);
+                     }
+                     catch (Exception e)
+                     {
+                         UpdatePlugins(new List<PluginModel>());
+                         Console.WriteLine(e.ToString());
+                     }
+                 }
+             });
+            
         }
         [LibraryImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
