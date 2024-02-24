@@ -181,8 +181,8 @@ namespace XMagnetSearch.UI
                     var pluginModels = new List<PluginModel>();
                     foreach(var plugin in Plugins)
                     {
-                        var enable = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
-                        pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, enable));
+                        var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
+                        pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
                     }
                     UpdatePlugins(pluginModels);
                 }
