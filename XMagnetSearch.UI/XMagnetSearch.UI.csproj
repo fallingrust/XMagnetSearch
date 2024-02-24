@@ -12,7 +12,8 @@
 		<RepositoryUrl>https://github.com/fallingrust/XMagnetSearch</RepositoryUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<Authors>fallingrust</Authors>
-		<Company>fallingrust</Company>		
+		<Company>fallingrust</Company>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>		
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">

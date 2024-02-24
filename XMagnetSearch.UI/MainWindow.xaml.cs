@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,6 +27,9 @@ namespace XMagnetSearch.UI
             tb_search.PreviewKeyDown += OnSerachKeyDown;
             sc.ScrollChanged += OnScrollChanged;
             RootDialog.Loaded += OnRootDialogLoaded;
+#if DEBUG
+            AllocConsole();
+#endif
         }
 
         private void OnRootDialogLoaded(object sender, RoutedEventArgs e)
@@ -200,6 +204,8 @@ namespace XMagnetSearch.UI
                 }
             }
         }
-       
+        [LibraryImport("kernel32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static partial bool AllocConsole();
     }
 }

@@ -44,9 +44,10 @@ namespace XMagnetSearch.SOKK
                             var array = elemnet.TextContent.Split(" ");
                             if (array.Length > 5 && elemnet.FirstElementChild != null && elemnet.FirstElementChild.FirstElementChild is IHtmlAnchorElement urlElement)
                             {
-                                var title = array[1][..array[1].IndexOf("Hot")];
-                                var size = array[3].Replace("Size：", "");
-                                var date = array[5].Replace("Created：", "");
+                                var titleIndex = array[1].IndexOf("hot") > 0 ? array[1].IndexOf("hot") : array[1].IndexOf("热度");
+                                var title = array[1][..titleIndex];
+                                var size = array[3].Replace("文件大小：", "");
+                                var date = array[5].Replace("创建时间：", "");
                                 var magnetUrl = urlElement.Href.Replace("about:///hash/", "").Replace(".html", "").Trim();
                                 results.Add(new(title, magnetUrl, size, "吃力网", date));
                             }
