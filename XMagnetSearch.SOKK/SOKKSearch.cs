@@ -8,36 +8,57 @@ namespace XMagnetSearch.SOKK
     [SearchMetadata("11h.sokk24.buzz", "吃力网", "1.0.0")]
     public class SOKKSearch : ISearch
     {
+        private HttpClient? _client;
+
+        private HttpClient GetClient()
+        {
+            if (_client == null)
+            {
+                _client = new HttpClient
+                {
+                    Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout)
+                };
+                _client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
+            }
+
+            return _client;
+        }
         public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout);
-            client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
+            var client = GetClient();
             var url = $"https://11h.sokk24.buzz/search/{search}/page-{page}.html";
-            var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var parser = new HtmlParser();
-                var content = await response.Content.ReadAsStringAsync();
-                var document = parser.ParseDocument(content);
-                var elemnets = document.All.Where(p => p.ClassName == "item");
-                foreach (var elemnet in elemnets)
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
                 {
-                    if (!elemnet.TextContent.Contains("在线播放"))
+                    var parser = new HtmlParser();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var document = parser.ParseDocument(content);
+                    var elemnets = document.All.Where(p => p.ClassName == "item");
+                    foreach (var elemnet in elemnets)
                     {
-                        var array = elemnet.TextContent.Split(" ");
-                        if (array.Length > 5 && elemnet.FirstElementChild != null && elemnet.FirstElementChild.FirstElementChild is IHtmlAnchorElement urlElement)
+                        if (!elemnet.TextContent.Contains("在线播放"))
                         {
-                            var title = array[1][..array[1].IndexOf("Hot")];
-                            var size = array[3].Replace("Size：", "");
-                            var date = array[5].Replace("Created：", "");                            
-                            var magnetUrl = urlElement.Href.Replace("about:///hash/", "").Replace(".html", "").Trim();
-                            results.Add(new(title, magnetUrl, size, "吃力网", date));
+                            var array = elemnet.TextContent.Split(" ");
+                            if (array.Length > 5 && elemnet.FirstElementChild != null && elemnet.FirstElementChild.FirstElementChild is IHtmlAnchorElement urlElement)
+                            {
+                                var title = array[1][..array[1].IndexOf("Hot")];
+                                var size = array[3].Replace("Size：", "");
+                                var date = array[5].Replace("Created：", "");
+                                var magnetUrl = urlElement.Href.Replace("about:///hash/", "").Replace(".html", "").Trim();
+                                results.Add(new(title, magnetUrl, size, "吃力网", date));
+                            }
                         }
                     }
                 }
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+           
             return results;
         }
     }

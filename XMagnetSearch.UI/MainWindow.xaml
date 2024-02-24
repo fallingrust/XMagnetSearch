@@ -25,7 +25,7 @@
         <Binding Source="{StaticResource vm}" />
     </Window.DataContext>
 
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost x:Name="RootDialog" Identifier="RootDialog">
         <materialDesign:DialogHost CloseOnClickAway="True" Identifier="ChildDialog">
             <Grid Background="White">
                 <Grid.RowDefinitions>

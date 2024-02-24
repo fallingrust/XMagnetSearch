@@ -9,12 +9,25 @@ namespace XMagnetSearch.EUSJ
     [SearchMetadata("eusjdkws.lol", "czechsearch", "1.0.0")]
     public class EUSJSearch : ISearch
     {
+        private HttpClient? _client;
+
+        private HttpClient GetClient()
+        {
+            if (_client == null)
+            {
+                _client = new HttpClient
+                {
+                    Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout)
+                };
+                _client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
+            }
+
+            return _client;
+        }
         public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
-            using var client = new HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout);
-            client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
+            var client = GetClient();
             var data = MD5.HashData(Encoding.UTF8.GetBytes($"{search}999"));
             var param = BitConverter.ToString(data).Replace("-", string.Empty)[..7].ToLower();
             var url = $"https://{GetUrlTime()}.eusjdkws.lol/list.php?q={search}&m=&f=_all&s=&p={page}&tk={param}";

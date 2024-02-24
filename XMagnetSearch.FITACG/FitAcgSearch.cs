@@ -30,73 +30,88 @@ namespace XMagnetSearch.FITACG
             var results = new List<SearchBean>();
             var client = GetClient();
             var url = $"https://fitacg.com/search/{search}?page={page}";
-            var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var parser = new HtmlParser();
-                var document = parser.ParseDocument(content);
-               
-                var elemnets = document.All.Where(p => p is IHtmlScriptElement);
-                foreach(var  element in  elemnets)
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
                 {
-                    var elementContent = element.TextContent.Trim();
-                    if (elementContent.StartsWith("var frontendContext"))
-                    {
-                        try
-                        {
-                            elementContent = elementContent.Replace("var frontendContext = ", "")[..^1];
-                            var responseBean = JsonSerializer.Deserialize<Response>(elementContent);
-                            if (responseBean != null && responseBean.Search != null && responseBean.Search.TopicList != null)
-                            {
-                                var tasks = new List<Task<string>>();
-                                foreach (var topic in responseBean.Search.TopicList)
-                                {
-                                    tasks.Add(GetMagnetUrl(topic.Id));
-                                }
-                                Task.WaitAll(tasks.ToArray());
-                                for (int i = 0; i < tasks.Count; i++)
-                                {
-                                    var magnetUrl = await tasks[i];
-                                    var topic = responseBean.Search.TopicList[i];
-                                    if (!string.IsNullOrWhiteSpace(magnetUrl))
-                                        results.Add(new SearchBean(topic.Title ?? string.Empty, magnetUrl, topic.Size ?? string.Empty, "菲特动漫", topic.DateTime ?? string.Empty));
-                                }
-                            }
+                    var content = await response.Content.ReadAsStringAsync();
+                    var parser = new HtmlParser();
+                    var document = parser.ParseDocument(content);
 
-                            break;
-                        }
-                        catch (Exception e)
+                    var elemnets = document.All.Where(p => p is IHtmlScriptElement);
+                    foreach (var element in elemnets)
+                    {
+                        var elementContent = element.TextContent.Trim();
+                        if (elementContent.StartsWith("var frontendContext"))
                         {
-                            Console.WriteLine(e);
+                            try
+                            {
+                                elementContent = elementContent.Replace("var frontendContext = ", "")[..^1];
+                                var responseBean = JsonSerializer.Deserialize<Response>(elementContent);
+                                if (responseBean != null && responseBean.Search != null && responseBean.Search.TopicList != null)
+                                {
+                                    var tasks = new List<Task<string>>();
+                                    foreach (var topic in responseBean.Search.TopicList)
+                                    {
+                                        tasks.Add(GetMagnetUrl(topic.Id));
+                                    }
+                                    Task.WaitAll(tasks.ToArray());
+                                    for (int i = 0; i < tasks.Count; i++)
+                                    {
+                                        var magnetUrl = await tasks[i];
+                                        var topic = responseBean.Search.TopicList[i];
+                                        if (!string.IsNullOrWhiteSpace(magnetUrl))
+                                            results.Add(new SearchBean(topic.Title ?? string.Empty, magnetUrl, topic.Size ?? string.Empty, "菲特动漫", topic.DateTime ?? string.Empty));
+                                    }
+                                }
+
+                                break;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                            }
                         }
                     }
                 }
-               
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+           
             return results;
         }
         public  async Task<string> GetMagnetUrl(int topic)
         {
             var client = GetClient();
             var url = $"https://fitacg.com/topic/{topic}";
-            var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                var parser = new HtmlParser();
-                var document = parser.ParseDocument(content);
-
-                var elemnets = document.All.Where(p => !string.IsNullOrWhiteSpace(p.ClassName) && p.ClassName.StartsWith("btn-download-link-2"));
-                foreach (var element in elemnets)
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
                 {
-                   if(element is IHtmlAnchorElement anchorElement && !string.IsNullOrWhiteSpace(anchorElement.Href))
-                    {
-                        return anchorElement.Href;
-                    }
-                }
+                    var content = await response.Content.ReadAsStringAsync();
+                    var parser = new HtmlParser();
+                    var document = parser.ParseDocument(content);
 
+                    var elemnets = document.All.Where(p => !string.IsNullOrWhiteSpace(p.ClassName) && p.ClassName.StartsWith("btn-download-link-2"));
+                    foreach (var element in elemnets)
+                    {
+                        if (element is IHtmlAnchorElement anchorElement && !string.IsNullOrWhiteSpace(anchorElement.Href))
+                        {
+                            return anchorElement.Href;
+                        }
+                    }
+
+                }
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
             return string.Empty;
         }
     }

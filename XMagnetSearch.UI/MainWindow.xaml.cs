@@ -24,10 +24,16 @@ namespace XMagnetSearch.UI
         {
             InitializeComponent();
             tb_search.PreviewKeyDown += OnSerachKeyDown;
-            RegisterPluginAsync();
             sc.ScrollChanged += OnScrollChanged;
+            RootDialog.Loaded += OnRootDialogLoaded;
         }
-        
+
+        private void OnRootDialogLoaded(object sender, RoutedEventArgs e)
+        {
+            _ = DialogHost.Show(new SearchingDialogContent(), "RootDialog");
+            _ = RegisterPluginAsync();
+        }
+
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (sender is ScrollViewer sc && sc.ViewportHeight + sc.VerticalOffset >= sc.ExtentHeight && !string.IsNullOrWhiteSpace(tb_search.Text))
@@ -61,7 +67,6 @@ namespace XMagnetSearch.UI
             base.OnClosed(e);
             _container?.Dispose();
         }
-        
         private void OnSearchMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is FrameworkElement container && container.DataContext is SearchModel searchModel)
@@ -106,6 +111,7 @@ namespace XMagnetSearch.UI
                                 tasks.Add(plugin.Value.SearchAsync(input, _page));
                             }
                         }
+                        Task.WaitAll(tasks.ToArray());
                         var results = new List<SearchBean>();
                         foreach (var task in tasks)
                         {
@@ -160,7 +166,7 @@ namespace XMagnetSearch.UI
             Snackbar.MessageQueue?.Clear();
             Snackbar.MessageQueue?.Enqueue("搜索源已更新");
         }
-        private async void RegisterPluginAsync()
+        private async Task RegisterPluginAsync()
         {
             var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
             if (dir.Exists)
@@ -179,7 +185,8 @@ namespace XMagnetSearch.UI
                 {
                     _container.ComposeParts(this);
                     var pluginModels = new List<PluginModel>();
-                    foreach(var plugin in Plugins)
+                   
+                    foreach (var plugin in Plugins)
                     {
                         var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
                         pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
@@ -188,6 +195,7 @@ namespace XMagnetSearch.UI
                 }
                 catch (Exception e)
                 {
+                    UpdatePlugins(new List<PluginModel>());
                     Console.WriteLine(e.ToString());
                 }
             }
