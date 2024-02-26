@@ -22,7 +22,7 @@
 
 <h3 align="center">磁力聚合搜索</h3>
   <p align="center">
-    一个简单的磁力聚合搜索软件,目前集成了4个磁力网站
+    一个简单的磁力聚合搜索软件
     <br/>
     <img src="images/Snipaste_2023-12-07_17-59-40.png" alt="UI" width="470" height="265">
     <br />     
@@ -34,22 +34,25 @@
 ## 目录
 
 - [上手指南](#上手指南)
-  - [环境要求](#环境要求)
+- [环境要求](#环境要求)
 - [文件目录说明](#文件目录说明)
 - [使用到的框架](#使用到的框架)
 
+### 支持的网站
+- [BTSOW](https://btsow.motorcycles)
+- [czechsearch](https://eusjdkws.lol)
+- [吃力网](https://11h.sokk24.buzz)
+- [种子搜](https://m.zhongziso365.xyz)
+- [菲特动漫](https://fitacg.com)
 ### 上手指南
 
-1、按照系统架构自行下载对应软件
-2、搜索对应资源
-3、双击复制链接至剪切板
+1、输入资源名称，回车
+2、双击复制链接至剪切板
 
-
-
-###### 环境要求
+### 环境要求
 
 1. Windows7或以上
-2. Dotnet Desktop Runtime （如果下载无运行环境包）[https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0]
+2. Dotnet Desktop Runtime [https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0]
 
 ### 文件目录说明
 
