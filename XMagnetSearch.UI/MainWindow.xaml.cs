@@ -81,7 +81,15 @@ namespace XMagnetSearch.UI
             {
                 if (DateTime.Now - _lastDownTime <= TimeSpan.FromMilliseconds(300))
                 {
-                    Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
+                    if (searchModel.MagnetUrl.StartsWith("magnet:?xt=urn:btih:"))
+                    {
+                        Clipboard.SetText(searchModel.MagnetUrl);
+                    }
+                    else
+                    {
+                        Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
+                    }
+                  
                     Snackbar.MessageQueue?.Clear();
                     Snackbar.MessageQueue?.Enqueue("链接已复制");
                 }
