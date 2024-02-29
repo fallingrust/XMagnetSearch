@@ -3,21 +3,20 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>		
+		<Nullable>enable</Nullable>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\eusj\</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\fitacg\</OutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\eusj\</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\fitacg\</OutputPath>
 		<DebugType>None</DebugType>
 		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
+	  <ProjectReference Include="..\..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
 	</ItemGroup>
 
 </Project>

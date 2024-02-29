@@ -8,15 +8,15 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\sokk\</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\btsow\</OutputPath>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\sokk\</OutputPath>
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\btsow\</OutputPath>
 		<DebugType>None</DebugType>
 		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
+	  <ProjectReference Include="..\..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
 	</ItemGroup>
 
 </Project>
