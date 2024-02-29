@@ -170,7 +170,13 @@ namespace XMagnetSearch.UI
             }
             if (DataContext is MainVM vm)
             {
-                vm.Plugins.AddRange(pluginModels);
+                vm.Plugins.Clear();
+                var models = pluginModels.OrderBy(p => p.TTL);
+                foreach(var model in models.Take(3))
+                {
+                    model.Selected = model.TTL != long.MaxValue;
+                }
+                vm.Plugins.AddRange(models);
             }
             Snackbar.MessageQueue?.Clear();
             Snackbar.MessageQueue?.Enqueue("搜索源已更新");
@@ -200,7 +206,7 @@ namespace XMagnetSearch.UI
                          foreach (var plugin in Plugins)
                          {
                              var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
-                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
+                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MaxValue, ttl));
                          }
                          UpdatePlugins(pluginModels);
                      }
