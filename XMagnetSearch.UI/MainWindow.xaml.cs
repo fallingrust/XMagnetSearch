@@ -203,11 +203,20 @@ namespace XMagnetSearch.UI
                          _container.ComposeParts(this);
                          var pluginModels = new List<PluginModel>();
 
+                         var ttlTasks = new List<Task<long>>();
                          foreach (var plugin in Plugins)
                          {
-                             var ttl = await SearchBase.CheckEnableAsync(plugin.Metadata.Source);
-                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MaxValue, ttl));
+                             ttlTasks.Add(SearchBase.CheckEnableAsync(plugin.Metadata.Source));
+                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, false, long.MaxValue));
                          }
+                         Task.WaitAll(ttlTasks.ToArray());
+                         ttlTasks.ForEach(async task =>
+                         {
+                             var ttl = await task;
+                             var index = ttlTasks.IndexOf(task);
+                             pluginModels[index].TTL = ttl;
+                             pluginModels[index].Enable = ttl != long.MaxValue;
+                         });
                          UpdatePlugins(pluginModels);
                      }
                      catch (Exception e)
