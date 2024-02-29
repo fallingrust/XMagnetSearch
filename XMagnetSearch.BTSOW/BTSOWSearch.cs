@@ -4,26 +4,11 @@ using System.ComponentModel.Composition;
 
 namespace XMagnetSearch.BTSOW
 {
-    [Export(typeof(ISearch))]
+    [Export(typeof(SearchBase))]
     [SearchMetadata("btsow.motorcycles", "btsow","1.0.0")]
-    public class BTSOWSearch : ISearch
+    public class BTSOWSearch : SearchBase
     {
-        private HttpClient? _client;
-
-        private HttpClient GetClient()
-        {
-            if (_client == null)
-            {
-                _client = new HttpClient
-                {
-                    Timeout = TimeSpan.FromMilliseconds(ISearch.Timeout)
-                };
-                _client.DefaultRequestHeaders.Add("User-Agent", ISearch.UserAgent);
-            }
-
-            return _client;
-        }
-        public async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
+        public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
             var client = GetClient();

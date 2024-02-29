@@ -17,7 +17,7 @@ namespace XMagnetSearch.UI
     public partial class MainWindow : Window
     {
         [ImportMany]
-        public IEnumerable<Lazy<ISearch, IMetadata>>? Plugins { get; set; }
+        public IEnumerable<Lazy<SearchBase, IMetadata>>? Plugins { get; set; }
         private CompositionContainer? _container = null;
         private int _page = 0;
         private DateTime _lastDownTime;
@@ -170,7 +170,13 @@ namespace XMagnetSearch.UI
             }
             if (DataContext is MainVM vm)
             {
-                vm.Plugins.AddRange(pluginModels);
+                vm.Plugins.Clear();
+                var models = pluginModels.OrderBy(p => p.TTL);
+                foreach(var model in models.Take(3))
+                {
+                    model.Selected = model.TTL != long.MaxValue;
+                }
+                vm.Plugins.AddRange(models);
             }
             Snackbar.MessageQueue?.Clear();
             Snackbar.MessageQueue?.Enqueue("搜索源已更新");
@@ -197,11 +203,20 @@ namespace XMagnetSearch.UI
                          _container.ComposeParts(this);
                          var pluginModels = new List<PluginModel>();
 
+                         var ttlTasks = new List<Task<long>>();
                          foreach (var plugin in Plugins)
                          {
-                             var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
-                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MinValue, ttl));
+                             ttlTasks.Add(SearchBase.CheckEnableAsync(plugin.Metadata.Source));
+                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, false, long.MaxValue));
                          }
+                         Task.WaitAll(ttlTasks.ToArray());
+                         ttlTasks.ForEach(async task =>
+                         {
+                             var ttl = await task;
+                             var index = ttlTasks.IndexOf(task);
+                             pluginModels[index].TTL = ttl;
+                             pluginModels[index].Enable = ttl != long.MaxValue;
+                         });
                          UpdatePlugins(pluginModels);
                      }
                      catch (Exception e)
