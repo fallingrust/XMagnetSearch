@@ -17,7 +17,7 @@ namespace XMagnetSearch.UI
     public partial class MainWindow : Window
     {
         [ImportMany]
-        public IEnumerable<Lazy<ISearch, IMetadata>>? Plugins { get; set; }
+        public IEnumerable<Lazy<SearchBase, IMetadata>>? Plugins { get; set; }
         private CompositionContainer? _container = null;
         private int _page = 0;
         private DateTime _lastDownTime;
@@ -205,7 +205,7 @@ namespace XMagnetSearch.UI
 
                          foreach (var plugin in Plugins)
                          {
-                             var ttl = await ISearch.CheckEnableAsync(plugin.Metadata.Source);
+                             var ttl = await SearchBase.CheckEnableAsync(plugin.Metadata.Source);
                              pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, ttl != long.MaxValue, ttl));
                          }
                          UpdatePlugins(pluginModels);
