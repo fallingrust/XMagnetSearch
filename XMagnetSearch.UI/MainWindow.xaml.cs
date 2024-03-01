@@ -34,7 +34,8 @@ namespace XMagnetSearch.UI
 
         private void OnRootDialogLoaded(object sender, RoutedEventArgs e)
         {
-            _ = DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
+            if (RootDialog.Identifier != null)
+                _ = DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
             _ = RegisterPluginAsync();
         }
 
@@ -99,14 +100,15 @@ namespace XMagnetSearch.UI
 
         private void OnSourceClick(object sender, RoutedEventArgs e)
         {
-            if (DataContext is MainVM vm)
+            if (DataContext is MainVM vm && ChildDialog.Identifier != null)
             {
                 DialogHost.Show(new SourceChangeDialogContent(vm.Plugins), ChildDialog.Identifier);
             }
         }
         private void LoadSearchs(string input)
         {
-            DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
+            if (RootDialog.Identifier != null)
+                DialogHost.Show(new SearchingDialogContent(), RootDialog.Identifier);
             List<string>? selectePlugins = null;
             if (DataContext is MainVM vm)
             {
@@ -191,7 +193,7 @@ namespace XMagnetSearch.UI
         }
         private async Task RegisterPluginAsync()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
              {
                  var dir = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "plugins"));
                  if (dir.Exists)
@@ -206,31 +208,36 @@ namespace XMagnetSearch.UI
                      var catalogs = new AggregateCatalog(dirCatalogs);
 
                      _container = new CompositionContainer(catalogs);
+                     var pluginModels = new List<PluginModel>();
                      try
                      {
                          _container.ComposeParts(this);
-                         var pluginModels = new List<PluginModel>();
-
-                         var ttlTasks = new List<Task<long>>();
-                         foreach (var plugin in Plugins)
+                       
+                         if (Plugins != null)
                          {
-                             ttlTasks.Add(SearchBase.CheckEnableAsync(plugin.Metadata.Source));
-                             pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, false, long.MaxValue));
-                         }
-                         Task.WaitAll(ttlTasks.ToArray());
-                         ttlTasks.ForEach(async task =>
-                         {
-                             var ttl = await task;
-                             var index = ttlTasks.IndexOf(task);
-                             pluginModels[index].TTL = ttl;
-                             pluginModels[index].Enable = ttl != long.MaxValue;
-                         });
-                         UpdatePlugins(pluginModels);
+                             var ttlTasks = new List<Task<long>>();
+                             foreach (var plugin in Plugins)
+                             {
+                                 ttlTasks.Add(SearchBase.CheckEnableAsync(plugin.Metadata.Source));
+                                 pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, false, long.MaxValue));
+                             }
+                             Task.WaitAll(ttlTasks.ToArray());
+                             ttlTasks.ForEach(async task =>
+                             {
+                                 var ttl = await task;
+                                 var index = ttlTasks.IndexOf(task);
+                                 pluginModels[index].TTL = ttl;
+                                 pluginModels[index].Enable = ttl != long.MaxValue;
+                             });
+                         }   
                      }
                      catch (Exception e)
                      {
-                         UpdatePlugins(new List<PluginModel>());
                          Console.WriteLine(e.ToString());
+                     }
+                     finally
+                     {
+                         UpdatePlugins(pluginModels);
                      }
                  }
              });
