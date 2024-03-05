@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Debug\net8.0-windows\plugins\btlm\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\btlm\</OutputPath>
+		<DebugType>None</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />
+	</ItemGroup>
+
+</Project>
