@@ -46,6 +46,7 @@
 - [菲特动漫](https://fitacg.com)
 - [搜番](https://ae.sefan.cc/)
 - [磁力熊](https://www.cilixiong.com/)
+- [动漫花园](https://garden.onekuma.cn/)
 ### 上手指南
 
 1、输入资源名称，回车

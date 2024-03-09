@@ -31,7 +31,7 @@ namespace XMagnetSearch
                 var ips = Dns.GetHostAddresses(host);
                 if (ips == null || ips.Length <= 0) return long.MaxValue;
                 using var ping = new Ping();
-                var reply = await ping.SendPingAsync(ips[0], TimeSpan.FromMilliseconds(3000));
+                var reply = await ping.SendPingAsync(ips[0], TimeSpan.FromMilliseconds(5000));
                 Console.WriteLine($"ping host:{host} {reply.Status} {reply.RoundtripTime}");
                 return reply.Status == IPStatus.Success ? reply.RoundtripTime : long.MaxValue;
             }

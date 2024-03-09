@@ -8,70 +8,75 @@
     xmlns:models="clr-namespace:XMagnetSearch.UI.Models"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="Transparent"
     mc:Ignorable="d">
-    <ScrollViewer
-        x:Name="sc"
-        HorizontalScrollBarVisibility="Disabled"
-        VerticalScrollBarVisibility="Auto">
-        <ScrollViewer.Resources>
-            <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
-        </ScrollViewer.Resources>
-        <ItemsControl
-            x:Name="PART_ItemsControl"
+    <Grid>
+        <ScrollViewer
+            x:Name="sc"
             Width="256"
-            MaxHeight="256"
-            Margin="4,0,12,0"
-            Grid.IsSharedSizeScope="True"
-            ItemsSource="{Binding Items1}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:PluginModel}">
-                    <Border
-                        x:Name="Border"
-                        Padding="8"
-                        IsEnabled="{Binding Enable}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="24" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition SharedSizeGroup="Checkerz" />
-                            </Grid.ColumnDefinitions>
-                            <Ellipse
-                                x:Name="ellipse"
-                                Width="6"
-                                Height="6"
-                                Fill="LightGreen" />
-                            <TextBlock
-                                Grid.Column="1"
-                                FontWeight="Bold"
-                                Text="{Binding Name}"
-                                TextTrimming="CharacterEllipsis"
-                                ToolTip="{Binding Name}" />
-                            <TextBlock
-                                x:Name="ttl"
-                                Grid.Column="2"
-                                Margin="0,0,8,0"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Text="{Binding TTL, StringFormat={}{0}ms}"
-                                TextTrimming="CharacterEllipsis" />
-                            <CheckBox
-                                Grid.Column="3"
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding Selected}" />
-                        </Grid>
-                    </Border>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Enable}" Value="False">
-                            <Setter TargetName="ttl" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="ellipse" Property="Fill" Value="Gray" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Enable}" Value="True">
-                            <Setter TargetName="ttl" Property="Foreground" Value="Green" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+            Height="256"
+            Background="Transparent"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Hidden">
+            <!--<ScrollViewer.Resources>
+                <Style BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" TargetType="ScrollBar" />
+            </ScrollViewer.Resources>-->
+            <ItemsControl
+                x:Name="PART_ItemsControl"
+                Margin="4,0,12,0"
+                Background="Transparent"
+                Grid.IsSharedSizeScope="True"
+                ItemsSource="{Binding Items1}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:PluginModel}">
+                        <Border
+                            x:Name="Border"
+                            Padding="8"
+                            IsEnabled="{Binding Enable}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="24" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                </Grid.ColumnDefinitions>
+                                <Ellipse
+                                    x:Name="ellipse"
+                                    Width="6"
+                                    Height="6"
+                                    Fill="LightGreen" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    FontWeight="Bold"
+                                    Text="{Binding Name}"
+                                    TextTrimming="CharacterEllipsis"
+                                    ToolTip="{Binding Name}" />
+                                <TextBlock
+                                    x:Name="ttl"
+                                    Grid.Column="2"
+                                    Margin="0,0,8,0"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="{Binding TTL, StringFormat={}{0}ms}"
+                                    TextTrimming="CharacterEllipsis" />
+                                <CheckBox
+                                    Grid.Column="3"
+                                    VerticalAlignment="Center"
+                                    IsChecked="{Binding Selected}" />
+                            </Grid>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Enable}" Value="False">
+                                <Setter TargetName="ttl" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="ellipse" Property="Fill" Value="Gray" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Enable}" Value="True">
+                                <Setter TargetName="ttl" Property="Foreground" Value="Green" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

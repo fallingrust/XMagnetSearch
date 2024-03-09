@@ -210,7 +210,7 @@ namespace XMagnetSearch.UI
                      var dirCatalogs = new List<DirectoryCatalog>();
                      foreach (var pluginDir in dir.GetDirectories())
                      {
-                         var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
+                         var catalog = new DirectoryCatalog(pluginDir.FullName, "XMagnetSearch.Garden.dll");
                          dirCatalogs.Add(catalog);
                      }
                      var catalogs = new AggregateCatalog(dirCatalogs);

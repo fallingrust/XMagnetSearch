@@ -12,31 +12,39 @@ namespace XMagnetSearch.EUSJ
         public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
         {
             var results = new List<SearchBean>();
-            var client = GetClient();
-            var data = MD5.HashData(Encoding.UTF8.GetBytes($"{search}999"));
-            var param = BitConverter.ToString(data).Replace("-", string.Empty)[..7].ToLower();
-            var url = $"https://{GetUrlTime()}.eusjdkws.lol/list.php?q={search}&m=&f=_all&s=&p={page}&tk={param}";
-            var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var parser = new HtmlParser();
-                var content = await response.Content.ReadAsStringAsync();
-                var document = parser.ParseDocument(content);
-                var elemnets = document.All.Where(p => p.ClassName == "list-group-item");
-                foreach (var elemnet in elemnets)
+                var client = GetClient();
+                var data = MD5.HashData(Encoding.UTF8.GetBytes($"{search}999"));
+                var param = BitConverter.ToString(data).Replace("-", string.Empty)[..7].ToLower();
+                var url = $"https://{GetUrlTime()}.eusjdkws.lol/list.php?q={search}&m=&f=_all&s=&p={page}&tk={param}";
+                var response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
                 {
-                    if (elemnet.TextContent != "result")
+                    var parser = new HtmlParser();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var document = parser.ParseDocument(content);
+                    var elemnets = document.All.Where(p => p.ClassName == "list-group-item");
+                    foreach (var elemnet in elemnets)
                     {
-                        var array = elemnet.TextContent.Split("\n").Select(p => p.Trim()).ToArray();
-                        if (array.Length >= 2 && array[1].Length > 40)
+                        if (elemnet.TextContent != "result")
                         {
-                            var title = array[0];
-                            var magnetUrl = array[1].Substring(array[1].Length - 40, 40);
-                            results.Add(new(title, magnetUrl, "", "czechsearch", ""));
+                            var array = elemnet.TextContent.Split("\n").Select(p => p.Trim()).ToArray();
+                            if (array.Length >= 2 && array[1].Length > 40)
+                            {
+                                var title = array[0];
+                                var magnetUrl = array[1].Substring(array[1].Length - 40, 40);
+                                results.Add(new(title, magnetUrl, "", "czechsearch", ""));
+                            }
                         }
                     }
-                }                
+                }
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+           
             return results;
         }
         private static string GetUrlTime()
