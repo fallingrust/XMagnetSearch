@@ -52,7 +52,23 @@ namespace XMagnetSearch.UI
                 LoadSearchs(tb_search.Text);
             }
         }
+        private void OnCopyClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement container && container.DataContext is SearchModel searchModel)
+            {
+                if (searchModel.MagnetUrl.StartsWith("magnet:?xt=urn:btih:"))
+                {
+                    Clipboard.SetText(searchModel.MagnetUrl);
+                }
+                else
+                {
+                    Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
+                }
 
+                Snackbar.MessageQueue?.Clear();
+                Snackbar.MessageQueue?.Enqueue("链接已复制");
+            }
+        }
         private void OnSerachKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is TextBox tb && e.Key == Key.Enter && tb.IsKeyboardFocused)
@@ -210,7 +226,7 @@ namespace XMagnetSearch.UI
                      var dirCatalogs = new List<DirectoryCatalog>();
                      foreach (var pluginDir in dir.GetDirectories())
                      {
-                         var catalog = new DirectoryCatalog(pluginDir.FullName, "XMagnetSearch.Garden.dll");
+                         var catalog = new DirectoryCatalog(pluginDir.FullName, "*.dll");
                          dirCatalogs.Add(catalog);
                      }
                      var catalogs = new AggregateCatalog(dirCatalogs);
@@ -255,5 +271,7 @@ namespace XMagnetSearch.UI
         [LibraryImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool AllocConsole();
+
+    
     }
 }

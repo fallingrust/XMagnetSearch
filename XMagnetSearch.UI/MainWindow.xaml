@@ -74,17 +74,30 @@
                                             <RowDefinition Height="2*" />
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
-                                        <TextBox
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            BorderBrush="Transparent"
-                                            BorderThickness="0"
-                                            FontSize="16"
-                                            IsReadOnly="True"
-                                            Style="{x:Null}"
-                                            Text="{Binding Title}"
-                                            ToolTip="{Binding Title}" />
+                                        <DockPanel>
+                                            <Viewbox
+                                                Width="24"
+                                                Height="24"
+                                                DockPanel.Dock="Right">
+                                                <Button
+                                                    Click="OnCopyClick"
+                                                    Style="{StaticResource MaterialDesignIconButton}"
+                                                    ToolTip="MaterialDesignIconButton">
+                                                    <materialDesign:PackIcon Foreground="#cccccc" Kind="ContentCopy" />
+                                                </Button>
+                                            </Viewbox>
+
+                                            <TextBox
+                                                Grid.Row="0"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="16"
+                                                IsReadOnly="True"
+                                                Style="{x:Null}"
+                                                Text="{Binding Title}"
+                                                ToolTip="{Binding Title}" />
+                                        </DockPanel>
+
                                         <DockPanel Grid.Row="1" LastChildFill="False">
                                             <TextBlock
                                                 Margin="16,8,0,0"
@@ -98,6 +111,7 @@
                                                 FontSize="10"
                                                 Foreground="#999999"
                                                 Text="{Binding From}" />
+
                                             <TextBlock
                                                 Margin="0,8,0,0"
                                                 HorizontalAlignment="Left"
@@ -105,6 +119,7 @@
                                                 FontSize="10"
                                                 Foreground="#999999"
                                                 Text="{Binding DateTime}" />
+
                                         </DockPanel>
                                     </Grid>
                                 </Border>
