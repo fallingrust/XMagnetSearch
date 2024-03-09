@@ -21,6 +21,7 @@ namespace XMagnetSearch.UI
         private CompositionContainer? _container = null;
         private int _page = 0;
         private DateTime _lastDownTime;
+        private bool _end = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,6 +45,7 @@ namespace XMagnetSearch.UI
             if (e.ViewportHeight + e.VerticalOffset >= e.ExtentHeight 
                 && e.ExtentHeight > 0
                 && e.VerticalChange > 0
+                && !_end
                 && !DialogHost.IsDialogOpen(RootDialog.Identifier)
                 && !string.IsNullOrWhiteSpace(tb_search.Text))
             {
@@ -63,6 +65,7 @@ namespace XMagnetSearch.UI
                         vm.Searchs.Clear();
                     }
                     _page = 0;
+                    _end = false;
                     Grid.SetRow(grid_search, 0);
                     svg_logo_full.Visibility = Visibility.Collapsed;
                     sc.Visibility = Visibility.Visible;
@@ -155,6 +158,11 @@ namespace XMagnetSearch.UI
             if (DialogHost.IsDialogOpen(RootDialog.Identifier))
             {
                 DialogHost.Close(RootDialog.Identifier);
+            }
+            if (!searchBeans.Any())
+            {
+                _end = true;
+                return;
             }
             if (DataContext is MainVM vm)
             {
