@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.ZhongZiSo
 {
     [Export(typeof(SearchBase))]
-    [SearchMetadata("m.zhongziso365.xyz", "种子搜", "1.0.0")]
+    [SearchMetadata("m.zhongziso365.xyz", "种子搜", "1.0.0", false)]
     public class ZhongzisoSearch : SearchBase
     {
         public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)

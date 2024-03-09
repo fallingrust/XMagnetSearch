@@ -13,9 +13,9 @@ namespace XMagnetSearch
         {
             if (_client == null)
             {
-                _client = new HttpClient
+                _client = new HttpClient()
                 {
-                    Timeout = TimeSpan.FromMilliseconds(Timeout)
+                    Timeout = TimeSpan.FromMilliseconds(Timeout),
                 };
                 _client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
             }

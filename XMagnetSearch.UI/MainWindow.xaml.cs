@@ -218,6 +218,7 @@ namespace XMagnetSearch.UI
                              var ttlTasks = new List<Task<long>>();
                              foreach (var plugin in Plugins)
                              {
+                                 if (!plugin.Metadata.Enable) continue;
                                  ttlTasks.Add(SearchBase.CheckEnableAsync(plugin.Metadata.Source));
                                  pluginModels.Add(new PluginModel(plugin.Metadata.Source, plugin.Metadata.Description, false, long.MaxValue));
                              }

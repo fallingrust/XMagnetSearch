@@ -8,6 +8,7 @@ namespace XMagnetSearch
         string Source { get; }
         string Description { get; }
         string Version { get; }
+        bool Enable { get; }
     }
 
     [MetadataAttribute]
@@ -20,6 +21,8 @@ namespace XMagnetSearch
         public string Description { get; private set; } = string.Empty;
         [DefaultValue("Unknown")]
         public string Version { get; private set; } = string.Empty;
+        [DefaultValue("Unknown")]
+        public bool Enable { get; private set; } = true;
         public SearchMetadata()
         {
         }
@@ -37,6 +40,10 @@ namespace XMagnetSearch
         public SearchMetadata(string source, string description, string version) : this(source, description)
         {
             Version = version;
+        }
+        public SearchMetadata(string source, string description, string version, bool enable) : this(source, description, version)
+        {
+            Enable = enable;
         }
     }
 }
