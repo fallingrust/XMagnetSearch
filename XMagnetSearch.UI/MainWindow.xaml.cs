@@ -58,11 +58,11 @@ namespace XMagnetSearch.UI
             {
                 if (searchModel.MagnetUrl.StartsWith("magnet:?xt=urn:btih:"))
                 {
-                    Clipboard.SetText(searchModel.MagnetUrl);
+                    Clipboard.SetDataObject(searchModel.MagnetUrl);
                 }
                 else
                 {
-                    Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
+                    Clipboard.SetDataObject($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
                 }
 
                 Snackbar.MessageQueue?.Clear();
@@ -103,11 +103,11 @@ namespace XMagnetSearch.UI
                 {
                     if (searchModel.MagnetUrl.StartsWith("magnet:?xt=urn:btih:"))
                     {
-                        Clipboard.SetText(searchModel.MagnetUrl);
+                        Clipboard.SetDataObject(searchModel.MagnetUrl);
                     }
                     else
                     {
-                        Clipboard.SetText($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
+                        Clipboard.SetDataObject($"magnet:?xt=urn:btih:{searchModel.MagnetUrl}");
                     }
                   
                     Snackbar.MessageQueue?.Clear();
