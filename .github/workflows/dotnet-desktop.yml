@@ -29,7 +29,7 @@ jobs:
       shell: bash
       run: |
         tag=$(git describe --tags --always)
-        release_name="AdultsSubtitle"
+        release_name="XMagnetSearch"
 
         # Pack files
         7z a -tzip "${release_name}.zip" "./bin/*"
