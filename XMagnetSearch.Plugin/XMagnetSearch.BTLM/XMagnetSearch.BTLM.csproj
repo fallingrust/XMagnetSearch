@@ -4,6 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
@@ -14,6 +15,7 @@
 		<OutputPath>$(SolutionDir)\XMagnetSearch.UI\bin\Release\net8.0-windows\publish\plugins\btlm\</OutputPath>
 		<DebugType>None</DebugType>
 		<DebugSymbols>false</DebugSymbols>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\XMagnetSearch.ISearch\XMagnetSearch.ISearch.csproj" />

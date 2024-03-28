@@ -8,6 +8,7 @@
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">		
 		<DebugType>None</DebugType>
 		<DebugSymbols>false</DebugSymbols>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" />
