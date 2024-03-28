@@ -22,7 +22,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Publish
-      run: dotnet publish --configuration Release --no-restore --output bin
+      run: dotnet publish --configuration Release --no-restore
 
     - name: Package
       id: create_package
@@ -32,7 +32,7 @@ jobs:
         release_name="XMagnetSearch"
 
         # Pack files
-        7z a -tzip "${release_name}.zip" "./bin/*"
+        7z a -tzip "${release_name}.zip" "./XMagnetSearch.UI/bin/Release/net8.0-windows/publish"
         echo "::set-output name=release_name::${release_name}"
         echo "::set-output name=release_tag::${tag}"
         echo "::set-output name=filename::${release_name}.zip"
