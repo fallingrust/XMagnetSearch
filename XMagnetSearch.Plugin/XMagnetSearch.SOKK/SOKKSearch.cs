@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace XMagnetSearch.SOKK
 {
     [Export(typeof(SearchBase))]
-    [SearchMetadata("11h.sokk24.buzz", "吃力网", "1.0.0")]
+    [SearchMetadata("11h.sokk24.buzz", "吃力网", "1.0.0", false)]
     public class SOKKSearch : SearchBase
     {
         public override async Task<IEnumerable<SearchBean>> SearchAsync(string search, int page)
