@@ -45,7 +45,7 @@
 ### 支持的网站
 - [BTSOW](https://btsow.motorcycles)
 - [czechsearch](https://eusjdkws.lol)
-- [吃力网](https://11h.sokk24.buzz)
+- [~~吃力网~~](https://11h.sokk24.buzz)
 - [~~种子搜~~](https://m.zhongziso365.xyz)
 - [菲特动漫](https://fitacg.com)
 - [搜番](https://ae.sefan.cc/)
