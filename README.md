@@ -3,16 +3,27 @@
 # XMagnetSearch
 
 
-<!-- PROJECT SHIELDS -->
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-<!-- PROJECT LOGO -->
-
+<a href="https://github.com/fallingrust/XMagnetSearch/stargazers">
+  <img alt="Stars" src="https://img.shields.io/github/stars/fallingrust/XMagnetSearch.svg?style=flat-square">
+</a>
+<a href="https://github.com/fallingrust/XMagnetSearch/graphs/contributors">
+<img alt="Contributors" src="https://img.shields.io/github/contributors/fallingrust/XMagnetSearch.svg?style=flat-square">
+</a>
+<a href="https://github.com/fallingrust/XMagnetSearch/network/members">
+<img alt="Forks" src="https://img.shields.io/github/forks/fallingrust/XMagnetSearch.svg?style=flat-square">
+</a>
+<a href="https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg">
+<img alt="Issues" src="https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg?style=flat-square">
+</a>
+<a href="https://github.com/fallingrust/XMagnetSearch/blob/master/LICENSE.txt">
+<img alt="MIT License" src="https://img.shields.io/github/license/fallingrust/XMagnetSearch">
+</a>
+<a href="https://github.com/fallingrust/XMagnetSearch">
+<img alt="Downloads" src="https://img.shields.io/github/downloads/fallingrust/XMagnetSearch/total">
+</a>
+<a href="https://github.com/fallingrust/XMagnetSearch/releases">
+<img alt="Releases" src="https://img.shields.io/github/v/release/fallingrust/XMagnetSearch?include_prereleases&logo=smartthings">
+</a>
 <br />
 
 <p align="center">
@@ -31,13 +42,6 @@
   </p>
 </p>
 
-## 目录
-
-- [上手指南](#上手指南)
-- [环境要求](#环境要求)
-- [文件目录说明](#文件目录说明)
-- [使用到的框架](#使用到的框架)
-
 ### 支持的网站
 - [BTSOW](https://btsow.motorcycles)
 - [czechsearch](https://eusjdkws.lol)
@@ -47,60 +51,16 @@
 - [搜番](https://ae.sefan.cc/)
 - [磁力熊](https://www.cilixiong.com/)
 - [动漫花园](https://garden.onekuma.cn/)
-### 上手指南
 
-1、输入资源名称，回车
-2、双击复制链接至剪切板
-
-### 环境要求
-
-1. Windows7或以上
-2. Dotnet Desktop Runtime [https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0]
-
-### 文件目录说明
-
-eg:
-
-```
-filetree 
-├─XMagnetSearch.BTSOW	---搜索插件
-│
-├─XMagnetSearch.EUSJ	---搜索插件
-│ 
-└─XMagnetSearch.ZhongZiSo	---搜索插件
-│
-├─XMagnetSearch.SOKK	---搜索插件
-│
-├─XMagnetSearch.UI	---UI
-│
-├─XMagnetSearch.ISearch	---搜索插件接口
-│
-├─XMagnetSearch.Resources	---资源项目
-
-```
+### 使用方式 
+- [前往Release下载最新包](https://github.com/fallingrust/XMagnetSearch/releases)
+- [安装Dotnet Desktop Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0)
+- 输入资源名称，回车
+- 双击复制链接至剪切板
 
 ### 使用到的框架
-
 - [AngleSharp](https://github.com/AngleSharp/AngleSharp)
 - [Prism](https://github.com/PrismLibrary/Prism)
 - [MaterialDesignInXamlToolkit](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit)
 - [SharpVectors](https://github.com/ElinamLLC/SharpVectors)
-
-  
-### 版权说明
-
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/fallingrust/XMagnetSearch/LICENSE.txt)
-<!-- links -->
-[your-project-path]:fallingrust/XMagnetSearch
-[contributors-shield]: https://img.shields.io/github/contributors/fallingrust/XMagnetSearch.svg?style=flat-square
-[contributors-url]: https://github.com/fallingrust/XMagnetSearch/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/fallingrust/XMagnetSearch.svg?style=flat-square
-[forks-url]: https://github.com/fallingrust/XMagnetSearch/network/members
-[stars-shield]: https://img.shields.io/github/stars/fallingrust/XMagnetSearch.svg?style=flat-square
-[stars-url]: https://github.com/fallingrust/XMagnetSearch/stargazers
-[issues-shield]: https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg?style=flat-square
-[issues-url]: https://img.shields.io/github/issues/fallingrust/XMagnetSearch.svg
-[license-shield]: https://img.shields.io/github/license/fallingrust/XMagnetSearch.svg?style=flat-square
-[license-url]: https://github.com/fallingrust/XMagnetSearch/blob/master/LICENSE.txt
-
 
