@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<Version>0.0.8</Version>
+		<Version>0.0.9</Version>
 		<ApplicationIcon>Resources\logo\logo.ico</ApplicationIcon>
 		<Description>磁力聚合搜索</Description>
 		<PackageProjectUrl>https://github.com/fallingrust/XMagnetSearch</PackageProjectUrl>
