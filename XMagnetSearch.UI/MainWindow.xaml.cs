@@ -189,6 +189,7 @@ namespace XMagnetSearch.UI
                         vm.Searchs.Add(SearchModel.Converter(bean));
                     }
                 }
+                Sort();
             }          
         }
         private void UpdatePlugins(IEnumerable<PluginModel> pluginModels)
@@ -268,10 +269,51 @@ namespace XMagnetSearch.UI
              });
             
         }
+
+        private void OnSortSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Sort();
+        }
+
+        private void Sort()
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.Invoke(() => Sort());
+                return;
+            }
+            if (DataContext is MainVM vm && cb_sort.SelectedItem is ComboBoxItem cbi)
+            {
+                if (cbi.Name == cbi_size_des.Name)
+                {
+                    var temp = vm.Searchs.OrderByDescending(p => p.SizeInBytes).ToArray();
+                    vm.Searchs.Clear();
+                    vm.Searchs.AddRange(temp);
+                }
+                else if (cbi.Name == cbi_time_des.Name)
+                {
+                    var temp = vm.Searchs.OrderByDescending(p => p.DateTime).ToArray();
+                    vm.Searchs.Clear();
+                    vm.Searchs.AddRange(temp);
+                }
+                else if (cbi.Name == cbi_time.Name)
+                {
+                    var temp = vm.Searchs.OrderBy(p => p.DateTime).ToArray();
+                    vm.Searchs.Clear();
+                    vm.Searchs.AddRange(temp);
+                }
+                else if (cbi.Name == cbi_size.Name)
+                {
+                    var temp = vm.Searchs.OrderBy(p => p.SizeInBytes).ToArray();
+                    vm.Searchs.Clear();
+                    vm.Searchs.AddRange(temp);
+                }
+            }
+        }
         [LibraryImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool AllocConsole();
 
-    
+       
     }
 }

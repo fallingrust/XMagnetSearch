@@ -15,6 +15,7 @@ namespace XMagnetSearch.UI.Models
         public string From { get => _from; set => SetProperty(ref _from, value); }
         public string DateTime { get => _dateTime; set => SetProperty(ref _dateTime, value); }
 
+        public long SizeInBytes { get; private set; }
         public SearchModel(string title, string magnetUrl, string size, string from, string dateTime)
         {
             Title = title;
@@ -22,6 +23,22 @@ namespace XMagnetSearch.UI.Models
             Size = size;
             From = from;
             DateTime = dateTime;
+            if (!string.IsNullOrWhiteSpace(Size))
+            {
+                var tempSize = Size.ToLower();
+                if (tempSize.Contains("kb") && double.TryParse(tempSize.Replace("kb", "").Trim(), out double sizeNumber))
+                {
+                    SizeInBytes = (long)(sizeNumber * 1024);
+                }
+                else if (tempSize.Contains("mb") && double.TryParse(tempSize.Replace("mb", "").Trim(), out sizeNumber))
+                {
+                    SizeInBytes = (long)(sizeNumber * 1024 * 1024);
+                }
+                else if (tempSize.Contains("gb") && double.TryParse(tempSize.Replace("gb", "").Trim(), out sizeNumber))
+                {
+                    SizeInBytes = (long)(sizeNumber * 1024 * 1024 * 1024);
+                }
+            }
         }
 
         public static SearchModel Converter(SearchBean searchBean)
